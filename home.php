@@ -71,8 +71,9 @@ input[type="submit"] {
 </head>
 <body>
 	<h1 id="logo">Columbus State University <br> LOW Calculator & Report Generator</h1>
-	<div id="tabs" style="width: 480px; height: 500px; color: white; ">
+	<div id="tabs" style="width: 480px; height: 500px; color: white;">
 		<h3> When you have completed adding your tasks, please press submit. </h3>
+		<div id="inner">
 		<select class="first-choice">
 			<option selected value="base">Please select a category: </option>
 			<option value="teachingTb">Teaching</option>
@@ -82,27 +83,16 @@ input[type="submit"] {
 		<select class="second-choice">
 			<option>Please select a task</option>
 		</select><br>	
-		<input id="addTask" type="button" value="Add" />
+		<input type="button" onclick="moreFields();" id="moreFieldsButton" value="Give me more fields!" />
+		 <input type="button" value="Remove task" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" />
+		
+		</div><br><br>
+		
+	<div id="newTabs"><br><br></div><br><br>
+	
+	<input type="submit" value="Send form" />
 	</div>
 	<script>
-		
-		
-		
-		$(".second-choice").change(function() {
-                 $('#tabs').append(
-            '<br>' +
-            '<select class="first-choice">' +
-			'<option selected value="base">Please select a category: </option>' +
-			'<option value="teachingTb">Teaching</option>' +
-			'<option value="researchTb">Research</option>' +
-			'<option value="serviceTb">Service</option>' +
-		'</select><br>' +
-		'<select id="second-choice">' +
-			'<option>Please select a task</option>' +
-		'</select><br>' +	
-		'<input type="button" value="Add" onclick="AddRow()" />');
-    		
-		}); 
 		
 		$(".first-choice").change(function() {
 			$(".second-choice").load("getter.php?choice=" + $(".first-choice").val());
@@ -110,6 +100,24 @@ input[type="submit"] {
 		});
 		
 		
+		var counter = 0;
+		
+		function moreFields() {
+			counter++;
+			var newFields = document.getElementById('inner').cloneNode(true);
+			newFields.id = '';
+			newFields.style.display = 'block';
+			var newField = newFields.childNodes;
+			for (var i = 0; i < newField.length; i++) {
+				var theName = newField[i].name
+				if (theName) newField[i].name = theName + counter;
+    		}
+			var insertHere = document.getElementById('newTabs');
+			insertHere.parentNode.insertBefore(newFields, insertHere);
+		}
+
+		window.onload = moreFields(); 
+
 		
 	</script>
 </body>
